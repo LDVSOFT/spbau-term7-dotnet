@@ -2,5 +2,6 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
 </Project>

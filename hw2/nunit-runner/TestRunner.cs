@@ -11,23 +11,28 @@ namespace net.ldvsoft.spbau.nunit_runner
 {        
     public class TestRunner
     {
-        public AssemblyTestsResults RunTestsInAssembly(Assembly assembly)
+        public static ClassTestsResults RunTestsInClass(Type type)
+        {
+            return new ClassTestsRunner(type).RunTests();
+        }
+        
+        public static AssemblyTestsResults RunTestsInAssembly(Assembly assembly)
         {
             var classTestsReports = (
                 from type in assembly.ExportedTypes 
                 where type.GetRuntimeMethods()
                     .Any(method => method.GetCustomAttribute<Test>() != null) 
-                select new ClassTestsRunner(type).RunTests()
+                select RunTestsInClass(type)
             ).ToList();
             return new AssemblyTestsResults(assembly.FullName, classTestsReports);
         }
 
-        public IEnumerable<AssemblyTestsResults> RunTestsInPath(string path)
+        public static IEnumerable<AssemblyTestsResults> RunTestsInPath(string path)
         {
             return Directory
                 .GetFiles(path)
-                .Select(file => Assembly.LoadFrom(file))
-                .Select(assembly => RunTestsInAssembly(assembly));
+                .Select(Assembly.LoadFrom)
+                .Select(RunTestsInAssembly);
         }
     }
 

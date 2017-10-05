@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <LangVersion>7</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="net.ldvsoft.spbau.nunit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\nunit\bin\Debug\netcoreapp2.0\net.ldvsoft.spbau.nunit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

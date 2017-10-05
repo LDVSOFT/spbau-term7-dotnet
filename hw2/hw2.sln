@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.0.0
 MinimumVisualStudioVersion = 10.0.0.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LDVSoftNUnit", "LDVSoftNUnit\LDVSoftNUnit.csproj", "{BEF837BF-BE12-4948-8359-B5E89AC31441}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "net.ldvsoft.spbau.nunit", "nunit\net.ldvsoft.spbau.nunit.csproj", "{BEF837BF-BE12-4948-8359-B5E89AC31441}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LDVSoftNUnitRunner", "LDVSoftNUnitRunner\LDVSoftNUnitRunner.csproj", "{E7FEBEDD-5877-4D7C-894E-975D203F8C69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "net.ldvsoft.spbau.nunit-runner", "nunit-runner\net.ldvsoft.spbau.nunit-runner.csproj", "{E7FEBEDD-5877-4D7C-894E-975D203F8C69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "net.ldvsoft.spbau.nunit-runner-test", "nunit-runner-test\net.ldvsoft.spbau.nunit-runner-test.csproj", "{C4382A4F-53BA-4FE2-9B2D-A2BEC0B2E752}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{E7FEBEDD-5877-4D7C-894E-975D203F8C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7FEBEDD-5877-4D7C-894E-975D203F8C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7FEBEDD-5877-4D7C-894E-975D203F8C69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4382A4F-53BA-4FE2-9B2D-A2BEC0B2E752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4382A4F-53BA-4FE2-9B2D-A2BEC0B2E752}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4382A4F-53BA-4FE2-9B2D-A2BEC0B2E752}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4382A4F-53BA-4FE2-9B2D-A2BEC0B2E752}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
