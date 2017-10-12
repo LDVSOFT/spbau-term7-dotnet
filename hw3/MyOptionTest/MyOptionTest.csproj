@@ -8,12 +8,10 @@
     <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
     <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyOption\MyOption.csproj" />
+  </ItemGroup>
   <!--<ItemGroup>-->
     <!--<ProjectReference Include="..\MyOption\MyOption.csproj" />-->
   <!--</ItemGroup>-->
-  <ItemGroup>
-    <Reference Include="MyOption, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\MyOption\bin\Debug\netstandard2.0\MyOption.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 </Project>
