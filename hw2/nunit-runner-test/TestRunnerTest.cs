@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using net.ldvsoft.spbau.nunit_runner;
 using NUnit.Framework;
 
@@ -9,21 +8,31 @@ namespace net.ldvsoft.spbau.nunit_runner_test
     {
         private TestRunner _testRunner = new TestRunner();
 
-        [NUnit.Framework.Test]
+        [Test]
         public void TestClassTest()
         {
             var results = TestRunner.RunTestsInClass(typeof(Tested));
             Console.WriteLine(results.Reports.ToString());
-            Assert.NotNull(results.Reports.Find(testsResults => testsResults.Name == nameof(Tested)));
+            Assert.AreEqual(typeof(Tested).FullName, results.Name);
+
+            var test1Result = results.Reports.Find(it => it.Name == "Test1");
+            Console.WriteLine($"test1: $test1Result");
+            Assert.That(test1Result is TestSucceeded);
         }
     }
 
     internal class Tested
     {
-        [net.ldvsoft.spbau.nunit.Test]
-        private void test1()
+        [nunit.Test]
+        private void Test1()
         {
             
+        }
+
+        [nunit.Test(Ignore = "toBeIgnored")]
+        private void IgnoredTest()
+        {
+            throw new Exception("Why am I being run?");
         }
     }
 }

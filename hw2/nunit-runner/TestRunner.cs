@@ -50,12 +50,12 @@ namespace net.ldvsoft.spbau.nunit_runner
             _obj = CreateInstance(type);
 
             _beforeMethods = (
-                from method in type.GetMethods()
+                from method in type.GetRuntimeMethods()
                 where method.GetCustomAttribute<Before>() != null
                 select method
             ).ToList();
             _afterMethods = (
-                from method in type.GetMethods()
+                from method in type.GetRuntimeMethods()
                 where method.GetCustomAttribute<After>() != null
                 select method
             ).ToList();
@@ -117,7 +117,7 @@ namespace net.ldvsoft.spbau.nunit_runner
         public ClassTestsResults RunTests()
         {
             foreach (var method in _type
-                .GetMethods()
+                .GetRuntimeMethods()
                 .Where(method => method.GetCustomAttribute<BeforeClass>() != null))
             {
                 try
@@ -131,13 +131,13 @@ namespace net.ldvsoft.spbau.nunit_runner
             }
 
             var reports = (
-                    from method in _type.GetMethods()
+                    from method in _type.GetRuntimeMethods()
                     where (method.GetCustomAttribute<Test>() != null)
                     select RunTest(method)
             ).ToList();
             
             foreach (var method in _type
-                .GetMethods()
+                .GetRuntimeMethods()
                 .Where(method => method.GetCustomAttribute<AfterClass>() != null))
             {
                 try
