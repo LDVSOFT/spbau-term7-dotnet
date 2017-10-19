@@ -3,20 +3,32 @@ using System.Reflection;
 
 namespace net.ldvsoft.spbau.nunit_runner
 {
-    public class TestDidNotThrowException : Exception
+    public class TestDidNotThrowExpectedException : Exception
     {
         public MethodInfo TestMethod { get; }
         public Type ExpectedExceptionType { get; }
+        public Exception ActualException { get; }
 
-        internal TestDidNotThrowException(MethodInfo testMethod, Type exceptionType)
+        internal TestDidNotThrowExpectedException(MethodInfo testMethod, Type exceptionType, Exception actualException)
         {
             TestMethod = testMethod;
             ExpectedExceptionType = exceptionType;
+            ActualException = actualException;
         }
 
-        public override string Message => 
-            $"Test method ${TestMethod.Name} in class ${TestMethod.DeclaringType} did not throw "
-            + $"expected exception of type ${ExpectedExceptionType.FullName}.";
+        public override string Message
+        {
+            get
+            {
+                string suffix;
+                if (ActualException is null)
+                    suffix = "Instead, it threw nothing.";
+                else
+                    suffix = $"Instead, it threw: {ActualException.Message}.";
+                return $"Test method {TestMethod.Name} in class {TestMethod.DeclaringType} did not throw "
+                       + $"expected exception of type {ExpectedExceptionType.FullName}. {suffix}";
+            }
+        }
     }
 
     public class SetupMethodThrewException : Exception
@@ -25,7 +37,7 @@ namespace net.ldvsoft.spbau.nunit_runner
         public Type TestType { get; }
         public MethodInfo FailedMethod { get; }
         public Exception Inner { get; }
-        
+
         internal SetupMethodThrewException(MethodInfo testMethod, Type testType, MethodInfo failedMethod, Exception inner)
         {
             TestMethod = testMethod;
@@ -35,16 +47,16 @@ namespace net.ldvsoft.spbau.nunit_runner
         }
 
         public override string Message =>
-            $"While trying to run test ${TestMethod.Name} in class ${TestType.FullName}, " 
-            + $"before/after method ${FailedMethod.Name} threw: ${Inner.Message}";
+            $"While trying to run test {TestMethod.Name} in class {TestType.FullName}, "
+            + $"before/after method {FailedMethod.Name} threw: {Inner.Message}";
     }
-    
+
     public class ClassSetupMethodThrewException : Exception
     {
         public Type TestType { get; }
         public MethodInfo FailedMethod { get; }
         public Exception Inner { get; }
-        
+
         internal ClassSetupMethodThrewException(Type testType, MethodInfo failedMethod, Exception inner)
         {
             TestType = testType;
@@ -53,7 +65,7 @@ namespace net.ldvsoft.spbau.nunit_runner
         }
 
         public override string Message =>
-            $"While trying to run tests in class ${TestType.DeclaringType}, " 
-            + $"before/after method ${FailedMethod.Name} threw: ${Inner.Message}";
+            $"While trying to run tests in class {TestType.DeclaringType}, "
+            + $"before/after method {FailedMethod.Name} threw: {Inner.Message}";
     }
 }

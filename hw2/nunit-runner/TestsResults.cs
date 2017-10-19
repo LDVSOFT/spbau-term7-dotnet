@@ -4,8 +4,8 @@ namespace net.ldvsoft.spbau.nunit_runner
 {
     public class ClassTestsResults
     {
-        public string Name { get; }       
-        public List<TestResult> Reports { get; }       
+        public string Name { get; }
+        public List<TestResult> Reports { get; }
 
         internal ClassTestsResults(string name, List<TestResult> reports)
         {
@@ -13,11 +13,11 @@ namespace net.ldvsoft.spbau.nunit_runner
             Reports = reports;
         }
     }
-    
+
     public class AssemblyTestsResults
     {
-        public string Name { get; }       
-        public List<ClassTestsResults> Reports { get; }       
+        public string Name { get; }
+        public List<ClassTestsResults> Reports { get; }
 
         internal AssemblyTestsResults(string name, List<ClassTestsResults> reports)
         {

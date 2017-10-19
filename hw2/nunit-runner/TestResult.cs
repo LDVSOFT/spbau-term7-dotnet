@@ -21,7 +21,7 @@ namespace net.ldvsoft.spbau.nunit_runner
             RunnedTimeSpan = runnedTimeSpan;
         }
     }
-    
+
     public class TestSucceeded : TestRunned
     {
         internal TestSucceeded(String name, TimeSpan runnedTimeSpan) : base(name, runnedTimeSpan)
@@ -32,7 +32,7 @@ namespace net.ldvsoft.spbau.nunit_runner
     public class TestFailed : TestRunned
     {
         public Exception Cause { get; }
-        
+
         internal TestFailed(String name, TimeSpan runnedTimeSpan, Exception cause) : base(name, runnedTimeSpan)
         {
             Cause = cause;
@@ -46,6 +46,6 @@ namespace net.ldvsoft.spbau.nunit_runner
         internal TestIgnored(string name, string reason): base(name)
         {
             Reason = reason;
-        }        
+        }
     }
 }

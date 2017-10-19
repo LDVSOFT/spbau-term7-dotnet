@@ -8,20 +8,20 @@ using net.ldvsoft.spbau.nunit;
 using static System.Activator;
 
 namespace net.ldvsoft.spbau.nunit_runner
-{        
+{
     public class TestRunner
     {
         public static ClassTestsResults RunTestsInClass(Type type)
         {
             return new ClassTestsRunner(type).RunTests();
         }
-        
+
         public static AssemblyTestsResults RunTestsInAssembly(Assembly assembly)
         {
             var classTestsReports = (
-                from type in assembly.ExportedTypes 
+                from type in assembly.DefinedTypes
                 where type.GetRuntimeMethods()
-                    .Any(method => method.GetCustomAttribute<Test>() != null) 
+                    .Any(method => method.GetCustomAttribute<Test>() != null)
                 select RunTestsInClass(type)
             ).ToList();
             return new AssemblyTestsResults(assembly.FullName, classTestsReports);
@@ -29,9 +29,19 @@ namespace net.ldvsoft.spbau.nunit_runner
 
         public static IEnumerable<AssemblyTestsResults> RunTestsInPath(string path)
         {
-            return Directory
-                .GetFiles(path)
-                .Select(Assembly.LoadFrom)
+            return Directory.GetFiles(path)
+                .Select(it =>
+                {
+                    try
+                    {
+                        return Assembly.LoadFrom(it);
+                    }
+                    catch (BadImageFormatException)
+                    {
+                        return null;
+                    }
+                })
+                .Where(it => it != null)
                 .Select(RunTestsInAssembly);
         }
     }
@@ -59,7 +69,7 @@ namespace net.ldvsoft.spbau.nunit_runner
                 where method.GetCustomAttribute<After>() != null
                 select method
             ).ToList();
-                
+
         }
 
         private TestResult DoRunTest(MethodInfo testMethod, Test test)
@@ -69,15 +79,32 @@ namespace net.ldvsoft.spbau.nunit_runner
             {
                 try
                 {
+                    bool haveThrown = false;
                     stopwatch.Start();
-                    testMethod.Invoke(_obj, NoParams);
-                    if (test.Expected != null)
-                        throw new TestDidNotThrowException(testMethod, test.Expected);
+                    try
+                    {
+                        testMethod.Invoke(_obj, NoParams);
+                    }
+                    catch (TargetInvocationException e)
+                    {
+                        if (test.Expected != null)
+                        {
+                            haveThrown = true;
+                            if (!test.Expected.IsInstanceOfType(e.InnerException))
+                                throw new TestDidNotThrowExpectedException(testMethod, test.Expected, e.InnerException);
+                        }
+                        else
+                        {
+                            throw e.InnerException;
+                        }
+                    }
+                    if (test.Expected != null && !haveThrown)
+                        throw new TestDidNotThrowExpectedException(testMethod, test.Expected, null);
                 }
                 finally
                 {
-                    stopwatch.Stop();                
-                }                
+                    stopwatch.Stop();
+                }
             }
             catch (Exception e)
             {
@@ -85,13 +112,13 @@ namespace net.ldvsoft.spbau.nunit_runner
             }
             return new TestSucceeded(testMethod.Name, stopwatch.Elapsed);
         }
-        
+
         private TestResult RunTest(MethodInfo testMethod)
         {
             var test = testMethod.GetCustomAttribute<Test>();
             if (test.Ignore != null)
                 return new TestIgnored(testMethod.Name, test.Ignore);
-            
+
             foreach (var method in _beforeMethods)
                 try
                 {
@@ -101,7 +128,7 @@ namespace net.ldvsoft.spbau.nunit_runner
                 {
                     throw new SetupMethodThrewException(testMethod, _type, method, e);
                 }
-            var pendingResult = DoRunTest(testMethod, test);    
+            var pendingResult = DoRunTest(testMethod, test);
             foreach (var method in _afterMethods)
                 try
                 {
@@ -113,7 +140,7 @@ namespace net.ldvsoft.spbau.nunit_runner
                 }
             return pendingResult;
         }
-            
+
         public ClassTestsResults RunTests()
         {
             foreach (var method in _type
@@ -135,7 +162,7 @@ namespace net.ldvsoft.spbau.nunit_runner
                     where (method.GetCustomAttribute<Test>() != null)
                     select RunTest(method)
             ).ToList();
-            
+
             foreach (var method in _type
                 .GetRuntimeMethods()
                 .Where(method => method.GetCustomAttribute<AfterClass>() != null))
@@ -149,7 +176,7 @@ namespace net.ldvsoft.spbau.nunit_runner
                     throw new ClassSetupMethodThrewException(_type, method, e);
                 }
             }
-            
+
             return new ClassTestsResults(_type.FullName, reports);
         }
     }
