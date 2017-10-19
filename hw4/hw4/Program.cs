@@ -38,9 +38,9 @@ namespace hw4
             var displayedHeight = Math.Min(displayHeight, _game.Height - baseY);
             var displayedWidth  = Math.Min(displayWidth , _game.Width  - baseX);
 
-            Console.Clear();
             Console.CursorVisible = false;
             Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             for (var y = 0; y < displayedHeight; ++y)
             for (var x = 0; x < displayedWidth; ++x)
             {
@@ -49,7 +49,7 @@ namespace hw4
                 switch (_game[gamePosition])
                 {
                     case CellState.Empty:
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.Write(' ');
                         break;
                     case CellState.Wall:
@@ -78,7 +78,15 @@ namespace hw4
 
         private void Run()
         {
+            var fg = Console.ForegroundColor;
+            var bg = Console.BackgroundColor;
+            Console.Clear();
+
+            Redraw();
             _loop.Run();
+
+            Console.ForegroundColor = fg;
+            Console.BackgroundColor = bg;
             Console.Clear();
             Console.WriteLine("You won!");
         }
