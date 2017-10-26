@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace net.ldvsoft.spbau.nunit
+namespace Net.LDVSoft.SPbAU.NUnit
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class Test: Attribute

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace net.ldvsoft.spbau.nunit_runner
+namespace Net.LDVSoft.SPbAU.NUnitRunner
 {
     public class TestResult
     {
@@ -12,38 +12,46 @@ namespace net.ldvsoft.spbau.nunit_runner
         }
     }
 
-    public class TestRunned : TestResult
+    public class TestRunned
+        : TestResult
     {
         public TimeSpan RunnedTimeSpan { get; }
 
-        protected TestRunned(string name, TimeSpan runnedTimeSpan): base(name)
+        protected TestRunned(string name, TimeSpan runnedTimeSpan)
+            : base(name)
         {
             RunnedTimeSpan = runnedTimeSpan;
         }
     }
 
-    public class TestSucceeded : TestRunned
+    public class TestSucceeded
+        : TestRunned
     {
-        internal TestSucceeded(String name, TimeSpan runnedTimeSpan) : base(name, runnedTimeSpan)
+        internal TestSucceeded(string name, TimeSpan runnedTimeSpan)
+            : base(name, runnedTimeSpan)
         {
         }
     }
 
-    public class TestFailed : TestRunned
+    public class TestFailed
+        : TestRunned
     {
         public Exception Cause { get; }
 
-        internal TestFailed(String name, TimeSpan runnedTimeSpan, Exception cause) : base(name, runnedTimeSpan)
+        internal TestFailed(string name, TimeSpan runnedTimeSpan, Exception cause)
+            : base(name, runnedTimeSpan)
         {
             Cause = cause;
         }
     }
 
-    public class TestIgnored : TestResult
+    public class TestIgnored
+        : TestResult
     {
-        public String Reason { get; }
+        public string Reason { get; }
 
-        internal TestIgnored(string name, string reason): base(name)
+        internal TestIgnored(string name, string reason)
+            : base(name)
         {
             Reason = reason;
         }

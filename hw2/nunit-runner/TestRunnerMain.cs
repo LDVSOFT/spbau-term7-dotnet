@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace net.ldvsoft.spbau.nunit_runner
+namespace Net.LDVSoft.SPbAU.NUnitRunner
 {
     internal static class TestRunnerMain
     {
@@ -10,10 +10,13 @@ namespace net.ldvsoft.spbau.nunit_runner
             {
                 case TestSucceeded res:
                     return $"OK (in {res.RunnedTimeSpan})";
+
                 case TestFailed res:
                     return $"FAILED (in ${res.RunnedTimeSpan}): {res.Cause}";
+
                 case TestIgnored res:
                     return $"ignored: {res.Reason}";
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(result));
 
@@ -23,24 +26,23 @@ namespace net.ldvsoft.spbau.nunit_runner
 
         private static void Main(string[] args)
         {
-            if (args.Length != 2)
+            if (args.Length != 1)
             {
                 Console.Error.WriteLine("Only one argument with path is accepted;");
                 Environment.ExitCode = 1;
                 return;
             }
 
-            var runner = new TestRunner();
-            var results = TestRunner.RunTestsInPath(args[1]);
+            var results = TestRunner.RunTestsInPath(args[0]);
             foreach (var assemblyResults in results)
             {
-                Console.Out.WriteLine($"Assembly {assemblyResults.Name}:");
+                Console.WriteLine($"Assembly {assemblyResults.Name}:");
                 foreach (var classResults in assemblyResults.Reports)
                 {
-                    Console.Out.WriteLine($"  Class {classResults.Name}:");
+                    Console.WriteLine($"  Class {classResults.Name}:");
                     foreach (var testResult in classResults.Reports)
                     {
-                        Console.Out.WriteLine($"    Test {testResult.Name}: {ResultToString(testResult)}");
+                        Console.WriteLine($"    Test {testResult.Name}: {ResultToString(testResult)}");
 
                     }
                 }

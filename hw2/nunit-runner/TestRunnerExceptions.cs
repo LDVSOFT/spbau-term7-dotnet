@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Reflection;
 
-namespace net.ldvsoft.spbau.nunit_runner
+namespace Net.LDVSoft.SPbAU.NUnitRunner
 {
-    public class TestDidNotThrowExpectedException : Exception
+    public class TestDidNotThrowExpectedException
+        : Exception
     {
         public MethodInfo TestMethod { get; }
         public Type ExpectedExceptionType { get; }
@@ -21,17 +22,23 @@ namespace net.ldvsoft.spbau.nunit_runner
             get
             {
                 string suffix;
-                if (ActualException is null)
-                    suffix = "Instead, it threw nothing.";
-                else
+                if (!(ActualException is null))
+                {
                     suffix = $"Instead, it threw: {ActualException.Message}.";
+                }
+                else
+                {
+                    suffix = "Instead, it threw nothing.";
+                }
+
                 return $"Test method {TestMethod.Name} in class {TestMethod.DeclaringType} did not throw "
                        + $"expected exception of type {ExpectedExceptionType.FullName}. {suffix}";
             }
         }
     }
 
-    public class SetupMethodThrewException : Exception
+    public class SetupMethodThrewException
+        : Exception
     {
         public MethodInfo TestMethod { get; }
         public Type TestType { get; }
@@ -51,7 +58,8 @@ namespace net.ldvsoft.spbau.nunit_runner
             + $"before/after method {FailedMethod.Name} threw: {Inner.Message}";
     }
 
-    public class ClassSetupMethodThrewException : Exception
+    public class ClassSetupMethodThrewException
+        : Exception
     {
         public Type TestType { get; }
         public MethodInfo FailedMethod { get; }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace net.ldvsoft.spbau.nunit_runner
+namespace Net.LDVSoft.SPbAU.NUnitRunner
 {
     public class ClassTestsResults
     {
