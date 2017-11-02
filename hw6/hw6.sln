@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hw6", "hw6\hw6.csproj", "{C44797F2-FB89-4396-B354-6648E39FD9C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hw6test", "hw6test\hw6test.csproj", "{1862EEA8-CD6B-4F9D-8519-81B76B4A2D90}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C44797F2-FB89-4396-B354-6648E39FD9C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C44797F2-FB89-4396-B354-6648E39FD9C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C44797F2-FB89-4396-B354-6648E39FD9C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C44797F2-FB89-4396-B354-6648E39FD9C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1862EEA8-CD6B-4F9D-8519-81B76B4A2D90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1862EEA8-CD6B-4F9D-8519-81B76B4A2D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1862EEA8-CD6B-4F9D-8519-81B76B4A2D90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1862EEA8-CD6B-4F9D-8519-81B76B4A2D90}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {55F5700E-E6C4-4BB1-A166-F0AE5341A764}
+	EndGlobalSection
+EndGlobal
