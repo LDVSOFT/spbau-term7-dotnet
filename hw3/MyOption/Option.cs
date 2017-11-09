@@ -32,7 +32,7 @@ namespace MyOption
         public T Value()
         {
             if (IsNone())
-                throw new Exception("No element in option");
+                throw new InvalidOperationException("No element in option");
             return _value;
         }
 

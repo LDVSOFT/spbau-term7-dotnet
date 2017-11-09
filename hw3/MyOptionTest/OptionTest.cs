@@ -22,7 +22,7 @@ namespace MyOptionTest
             Assert.IsFalse(empty.IsSome());
             
             Assert.AreEqual(1, int1.Value());
-            Assert.ThrowsException<Exception>(() => empty.Value());
+            Assert.ThrowsException<InvalidOperationException>(() => empty.Value());
             
             Assert.AreEqual(int1, anotherInt1);
             Assert.AreEqual(int1.GetHashCode(), anotherInt1.GetHashCode());
