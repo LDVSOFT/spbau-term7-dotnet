@@ -25,10 +25,14 @@ namespace MyOptionTest
             Assert.ThrowsException<Exception>(() => empty.Value());
             
             Assert.AreEqual(int1, anotherInt1);
+            Assert.AreEqual(int1.GetHashCode(), anotherInt1.GetHashCode());
             Assert.AreEqual(empty, anotherEmpty);
-            
+            Assert.AreEqual(empty.GetHashCode(), anotherEmpty.GetHashCode());
+
             Assert.AreNotEqual(int1, int2);
+            Assert.AreNotEqual(int1.GetHashCode(), int2.GetHashCode());
             Assert.AreNotEqual(int1, empty);
+            Assert.AreNotEqual(int1.GetHashCode(), empty.GetHashCode());
         }
 
         [TestMethod]

@@ -5,9 +5,14 @@ namespace MyOption
 {
     public sealed class Option<T>
     {
-        private static Option<T> _emptyOption = new Option<T>();
+        private static readonly Option<T> EmptyOption;
 
         private readonly T _value;
+
+        static Option()
+        {
+            EmptyOption = new Option<T>();
+        }
 
         private Option()
         {
@@ -19,10 +24,10 @@ namespace MyOption
         }
 
         public static Option<T> Some(T value) => new Option<T>(value);
-        public static Option<T> None() => _emptyOption;
+        public static Option<T> None() => EmptyOption;
 
-        public bool IsSome() => !Equals(_emptyOption);
-        public bool IsNone() =>  Equals(_emptyOption);
+        public bool IsSome() => !IsNone();
+        public bool IsNone() => this == EmptyOption;
 
         public T Value()
         {
@@ -31,11 +36,11 @@ namespace MyOption
             return _value;
         }
 
-        public Option<U> Map<U>(Func<T, U> f)
+        public Option<TResult> Map<TResult>(Func<T, TResult> f)
         {
             if (IsNone())
-                return Option<U>.None();
-            return Option<U>.Some(f(_value));
+                return Option<TResult>.None();
+            return Option<TResult>.Some(f(_value));
         }
 
         public static Option<T> Flatten(Option<Option<T>> a) => a.IsNone() ? None() : a.Value();
@@ -43,16 +48,25 @@ namespace MyOption
         public override bool Equals(object o)
         {
             if (!(o is Option<T> other))
+            {
                 return false;
-            if (this == _emptyOption || other == _emptyOption)
-                return this == other;
+            }
+
+            if (this.IsNone() || other.IsNone())
+            {
+                return this.IsNone() && other.IsNone();
+            }
+
             return _value.Equals(other._value);
         }
 
         public override int GetHashCode()
         {
             if (IsNone())
+            {
                 return 0;
+            }
+
             return EqualityComparer<T>.Default.GetHashCode(_value);
         }
 
