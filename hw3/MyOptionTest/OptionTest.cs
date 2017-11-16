@@ -7,36 +7,44 @@ namespace MyOptionTest
     [TestClass]
     public class OptionTest
     {
+        private readonly Option<int> _int1 = Option<int>.Some(1);
+        private readonly Option<int> _anotherInt1 = Option<int>.Some(1);
+        private readonly Option<int> _int2 = Option<int>.Some(2);
+        private readonly Option<int> _empty = Option<int>.None();
+        private readonly Option<int> _anotherEmpty = Option<int>.None();
+
         [TestMethod]
-        public void SimpleTest()
+        public void NoneOrSomeTest()
         {
-            var int1 = Option<int>.Some(1);
-            var anotherInt1 = Option<int>.Some(1);
-            var int2 = Option<int>.Some(2);
-            var empty = Option<int>.None();
-            var anotherEmpty = Option<int>.None();
-
-            Assert.IsTrue(int1.IsSome());
-            Assert.IsTrue(empty.IsNone());
-            Assert.IsFalse(int1.IsNone());
-            Assert.IsFalse(empty.IsSome());
-            
-            Assert.AreEqual(1, int1.Value());
-            Assert.ThrowsException<InvalidOperationException>(() => empty.Value());
-            
-            Assert.AreEqual(int1, anotherInt1);
-            Assert.AreEqual(int1.GetHashCode(), anotherInt1.GetHashCode());
-            Assert.AreEqual(empty, anotherEmpty);
-            Assert.AreEqual(empty.GetHashCode(), anotherEmpty.GetHashCode());
-
-            Assert.AreNotEqual(int1, int2);
-            Assert.AreNotEqual(int1.GetHashCode(), int2.GetHashCode());
-            Assert.AreNotEqual(int1, empty);
-            Assert.AreNotEqual(int1.GetHashCode(), empty.GetHashCode());
+            Assert.IsTrue(_int1.IsSome());
+            Assert.IsTrue(_empty.IsNone());
+            Assert.IsFalse(_int1.IsNone());
+            Assert.IsFalse(_empty.IsSome());
         }
 
         [TestMethod]
-        public void TestMapping()
+        public void ValueTest()
+        {
+            Assert.AreEqual(1, _int1.Value());
+            Assert.ThrowsException<InvalidOperationException>(() => _empty.Value());
+        }
+
+        [TestMethod]
+        public void EqualityTest()
+        {            
+            Assert.AreEqual(_int1, _anotherInt1);
+            Assert.AreEqual(_int1.GetHashCode(), _anotherInt1.GetHashCode());
+            Assert.AreEqual(_empty, _anotherEmpty);
+            Assert.AreEqual(_empty.GetHashCode(), _anotherEmpty.GetHashCode());
+
+            Assert.AreNotEqual(_int1, _int2);
+            Assert.AreNotEqual(_int1.GetHashCode(), _int2.GetHashCode());
+            Assert.AreNotEqual(_int1, _empty);
+            Assert.AreNotEqual(_int1.GetHashCode(), _empty.GetHashCode());
+        }
+
+        [TestMethod]
+        public void MappingTest()
         {
             Assert.AreEqual(Option<int>.None(), Option<int>.None().Map(x => x * 2));
             Assert.AreEqual(Option<int>.Some(2), Option<int>.Some(1).Map(x => x * 2));
@@ -46,18 +54,28 @@ namespace MyOptionTest
         }
 
         [TestMethod]
-        public void TestFlatten()
+        public void NoneToNoneFlattenTest()
         {
             Assert.AreEqual
             (
-                Option<int>.None(), 
+                Option<int>.None(),
                 Option<int>.Flatten(Option<Option<int>>.None())
             );
+        }
+
+        [TestMethod]
+        public void SomeToNoneFlattenTest()
+        {
             Assert.AreEqual
             (
-                Option<int>.None(), 
+                Option<int>.None(),
                 Option<int>.Flatten(Option<Option<int>>.Some(Option<int>.None()))
             );
+        }
+
+        [TestMethod]
+        public void SomeToSomeFlattenTest()
+        {
             Assert.AreEqual
             (
                 Option<int>.Some(55),
