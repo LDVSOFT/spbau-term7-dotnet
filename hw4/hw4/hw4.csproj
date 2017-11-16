@@ -3,7 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <StartupObject>hw4.Program</StartupObject>
+    <StartupObject>Hw4.Program</StartupObject>
+    <RootNamespace>Hw4</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

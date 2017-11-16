@@ -2,10 +2,11 @@
 using System.IO;
 using System.Runtime.Serialization;
 
-namespace hw4
+namespace Hw4
 {
     public enum CellState
     {
+        Nothing,
         Empty,
         Wall,
         Exit
@@ -16,7 +17,7 @@ namespace hw4
         Up,
         Down,
         Left,
-        Right        
+        Right
     }
 
     public static class MovementUtils
@@ -36,7 +37,7 @@ namespace hw4
                 default:
                     throw new ArgumentOutOfRangeException(nameof(movement), movement, null);
             }
-        }    
+        }
     }
 
     [Serializable]
@@ -116,7 +117,7 @@ namespace hw4
             newPosition.y = Math.Max(0, Math.Min(Height - 1, newPosition.y));
             newPosition.x = Math.Max(0, Math.Min(Width - 1, newPosition.x));
             if (this[newPosition] != CellState.Wall)
-                CharacterPosition = newPosition;            
+                CharacterPosition = newPosition;
         }
 
         public bool IsOver => this[CharacterPosition] == CellState.Exit;

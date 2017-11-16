@@ -1,41 +1,74 @@
 ﻿using System;
-using System.Threading;
 
-namespace hw4
+namespace Hw4
 {
     public class EventLoop
     {
-        public event EventHandler<EventArgs> LeftHandler;
-        public event EventHandler<EventArgs> RightHandler;
-        public event EventHandler<EventArgs> DownHandler;
-        public event EventHandler<EventArgs> UpHandler;
-        public event EventHandler<EventArgs> TickHandler;
+        public enum InputEvent
+        {
+            Left,
+            Right,
+            Down,
+            Up,
+            Exit
+        }
+
+        public class InputEventArgs : EventArgs
+        {
+            public InputEventArgs(InputEvent aEvent)
+            {
+                Event = aEvent;
+            }
+
+            public InputEvent Event { get; }
+        }
+
+        public event EventHandler<InputEventArgs> InputHandler;
+        public event Action TickHandler;
 
         private bool _work = true;
 
         public void Run()
         {
-            while (_work)
+            Console.TreatControlCAsInput = true;
+            while (true)
             {
-                OnEvent(ref TickHandler);
+                TickHandler?.Invoke();
+                if (!_work)
+                {
+                    break;
+                }
+
+                while (!Console.KeyAvailable)
+                {
+                }
                 var keyInfo = Console.ReadKey();
                 switch (keyInfo.Key)
                 {
                     case ConsoleKey.LeftArrow:
                     case ConsoleKey.A:
-                        OnEvent(ref LeftHandler);
+                        InputHandler?.Invoke(this, new InputEventArgs(InputEvent.Left));
                         break;
                     case ConsoleKey.RightArrow:
                     case ConsoleKey.D:
-                        OnEvent(ref RightHandler);
+                        InputHandler?.Invoke(this, new InputEventArgs(InputEvent.Right));
                         break;
                     case ConsoleKey.DownArrow:
                     case ConsoleKey.S:
-                        OnEvent(ref DownHandler);
+                        InputHandler?.Invoke(this, new InputEventArgs(InputEvent.Down));
                         break;
                     case ConsoleKey.UpArrow:
                     case ConsoleKey.W:
-                        OnEvent(ref UpHandler);
+                        InputHandler?.Invoke(this, new InputEventArgs(InputEvent.Up));
+                        break;
+                    case ConsoleKey.C:
+                        if ((keyInfo.Modifiers & ConsoleModifiers.Control) != 0)
+                        {
+                            InputHandler?.Invoke(this, new InputEventArgs(InputEvent.Exit));
+                        }
+                        break;
+                    case ConsoleKey.Escape:
+                        InputHandler?.Invoke(this, new InputEventArgs(InputEvent.Exit));
                         break;
                 }
             }
@@ -44,11 +77,6 @@ namespace hw4
         public void Stop()
         {
             _work = false;
-        }
-
-        private void OnEvent(ref EventHandler<EventArgs> handler)
-        {
-            Volatile.Read(ref handler)?.Invoke(this, EventArgs.Empty);
         }
     }
 }
